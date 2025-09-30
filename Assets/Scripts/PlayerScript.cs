@@ -1,7 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    private CoreScript core;
 
     public Rigidbody2D player;
 
@@ -18,24 +20,26 @@ public class PlayerScript : MonoBehaviour
     public KeyCode turnRightInput;
     public float turnSpeed;
 
-    //TEMPORARY, THIS SHOULD NOT BE HERE PERMANENTALY
-    public float scrollSpeed;
+
+    private void Awake()
+    {
+        core = Object.FindAnyObjectByType<CoreScript>();
+    }
 
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
-        
     }
 
     
     void Update()
     {
         MovementUpdate();
+        core.EndlessScroll(player);
     }
 
     void MovementUpdate()
     {
-        player.linearVelocityY = 0.0f - scrollSpeed;
         player.transform.position += transform.up * currentSpeed * Time.deltaTime;
         player.transform.Rotate(new Vector3(0, 0, currentRotation) * Time.deltaTime);
 
