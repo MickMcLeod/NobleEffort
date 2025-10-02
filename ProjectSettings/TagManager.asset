@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BoundaryLeft
   - BoundaryRight
+  - LossZone
   layers:
   - Default
   - TransparentFX

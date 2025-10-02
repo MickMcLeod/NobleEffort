@@ -6,7 +6,7 @@ public class CoreScript : MonoBehaviour
 
     void Awake()
     {
-        Screen.SetResolution(480, 1080, false);
+        Screen.SetResolution(400, 800, false);
     }
 
     public void EndlessScroll(Rigidbody2D rigidbody)

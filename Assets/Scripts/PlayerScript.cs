@@ -20,6 +20,7 @@ public class PlayerScript : MonoBehaviour
     public KeyCode turnRightInput;
     public float turnSpeed;
 
+    private bool Losing = false;
 
     private void Awake()
     {
@@ -34,8 +35,15 @@ public class PlayerScript : MonoBehaviour
     
     void Update()
     {
-        MovementUpdate();
-        core.EndlessScroll(player);
+        if (Losing == true)
+        {
+            player.linearVelocityY = 0.0f;
+        }
+        else
+        {
+            core.EndlessScroll(player);
+            MovementUpdate();
+        }
     }
 
     void MovementUpdate()
@@ -44,47 +52,56 @@ public class PlayerScript : MonoBehaviour
         player.transform.Rotate(new Vector3(0, 0, currentRotation) * Time.deltaTime);
 
         //Forward Movement
-        if (Input.GetKeyDown(forwardInput))
+        if (Input.GetKeyDown(forwardInput) && (Losing == false))
         {
             currentSpeed += forwardSpeed;
         }
 
-        if (Input.GetKeyUp(forwardInput))
+        if (Input.GetKeyUp(forwardInput) && (Losing == false))
         {
             currentSpeed -= forwardSpeed;
         }
 
         //Backward Movement
-        if (Input.GetKeyDown(backwardInput))
+        if (Input.GetKeyDown(backwardInput) && (Losing == false))
         {
             currentSpeed -= backwardSpeed;
         }
 
-        if (Input.GetKeyUp(backwardInput))
+        if (Input.GetKeyUp(backwardInput) && (Losing == false))
         {
             currentSpeed += backwardSpeed;
         }
 
         //Left Turn
-        if (Input.GetKeyDown(turnLeftInput))
+        if (Input.GetKeyDown(turnLeftInput) && (Losing == false))
         {
             currentRotation += turnSpeed;
         }
 
-        if (Input.GetKeyUp(turnLeftInput))
+        if (Input.GetKeyUp(turnLeftInput) && (Losing == false))
         {
             currentRotation -= turnSpeed;
         }
 
         //Right Turn
-        if (Input.GetKeyDown(turnRightInput))
+        if (Input.GetKeyDown(turnRightInput) && (Losing == false))
         {
             currentRotation -= turnSpeed;
         }
 
-        if (Input.GetKeyUp(turnRightInput))
+        if (Input.GetKeyUp(turnRightInput) && (Losing == false))
         {
             currentRotation += turnSpeed;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("LossZone"))
+        {
+            Losing = true;
+            Debug.Log("Entered LossZone");
         }
     }
 }
