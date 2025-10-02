@@ -101,7 +101,14 @@ public class PlayerScript : MonoBehaviour
         if (other.CompareTag("LossZone"))
         {
             Losing = true;
-            Debug.Log("Entered LossZone");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("LossZone"))
+        {
+            Losing = false;
         }
     }
 }
