@@ -11,14 +11,18 @@ public class PlayerScript : MonoBehaviour
     private float currentSpeed;
     private float currentRotation;
 
-    public KeyCode forwardInput;
+    //public KeyCode forwardInput; (DEPRECATED)
+    private bool forwardPressed;
     public float forwardSpeed;
 
-    public KeyCode backwardInput;
+    //public KeyCode backwardInput; (DEPRECATED)
+    private bool backPressed;
     public float backwardSpeed;
 
-    public KeyCode turnLeftInput;
-    public KeyCode turnRightInput;
+    //public KeyCode turnLeftInput; (DEPRECATED)
+    //public KeyCode turnRightInput; (DEPRECATED)
+    private bool turnLeftPressed;
+    private bool turnRightPressed;
     public float turnSpeed;
 
     private bool losing = false;
@@ -57,7 +61,7 @@ public class PlayerScript : MonoBehaviour
         player.transform.position += transform.up * currentSpeed * Time.deltaTime;
         player.transform.Rotate(new Vector3(0, 0, currentRotation) * Time.deltaTime);
 
-        //Forward Movement
+        /*Forward Movement (DEPRECATED)
         if (Input.GetKeyDown(forwardInput) && (losing == false))
         {
             currentSpeed += forwardSpeed;
@@ -65,10 +69,10 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyUp(forwardInput) && (losing == false))
         {
-            currentSpeed -= forwardSpeed;
-        }
+            //currentSpeed -= forwardSpeed;
+        } */
 
-        //Backward Movement
+        /*Backward Movement (DEPRECATED)
         if (Input.GetKeyDown(backwardInput) && (losing == false))
         {
             currentSpeed -= backwardSpeed;
@@ -77,9 +81,9 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyUp(backwardInput) && (losing == false))
         {
             currentSpeed += backwardSpeed;
-        }
+        } */
 
-        //Left Turn
+        /*Left Turn (DEPRECATED)
         if (Input.GetKeyDown(turnLeftInput) && (losing == false))
         {
             currentRotation += turnSpeed;
@@ -88,15 +92,71 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKeyUp(turnLeftInput) && (losing == false))
         {
             currentRotation -= turnSpeed;
-        }
+        } */
 
-        //Right Turn
+        /*Right Turn (DEPRECATED)
         if (Input.GetKeyDown(turnRightInput) && (losing == false))
         {
             currentRotation -= turnSpeed;
         }
 
         if (Input.GetKeyUp(turnRightInput) && (losing == false))
+        {
+            currentRotation += turnSpeed;
+        } */
+    }
+
+    void OnForward(InputValue value)
+    {
+        forwardPressed = value.isPressed;
+        if ((forwardPressed == true) && (losing == false))
+        {
+            currentSpeed += forwardSpeed;
+        }
+
+        if ((forwardPressed == false) && (losing == false))
+        {
+            currentSpeed -= forwardSpeed;
+        }
+    }
+
+    void OnBack(InputValue value)
+    {
+        backPressed = value.isPressed;
+        if ((backPressed == true) && (losing == false))
+        {
+            currentSpeed -= backwardSpeed;
+        }
+
+        if ((backPressed == false) && (losing == false))
+        {
+            currentSpeed += backwardSpeed;
+        }
+    }
+
+    void OnRotateLeft(InputValue value)
+    {
+        turnLeftPressed = value.isPressed;
+        if ((turnLeftPressed == true) && (losing == false))
+        {
+            currentRotation += turnSpeed;
+        }
+
+        if ((turnLeftPressed == false) && (losing == false))
+        {
+            currentRotation -= turnSpeed;
+        }
+    }
+
+    void OnRotateRight(InputValue value)
+    {
+        turnRightPressed = value.isPressed;
+        if ((turnRightPressed == true) && (losing == false))
+        {
+            currentRotation -= turnSpeed;
+        }
+
+        if ((turnRightPressed == false) && (losing == false))
         {
             currentRotation += turnSpeed;
         }
