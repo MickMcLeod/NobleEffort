@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CoreScript : MonoBehaviour
 {
+    public int playerCount;
+    
     public float scrollSpeed;
 
     //Rock Obstacle Refs
@@ -14,6 +16,11 @@ public class CoreScript : MonoBehaviour
     void Awake()
     {
         Screen.SetResolution(400, 800, false);
+    }
+
+    public void addPlayer()
+    {
+        playerCount++;
     }
 
     void Update()

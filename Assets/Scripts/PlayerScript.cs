@@ -6,6 +6,12 @@ public class PlayerScript : MonoBehaviour
 {
     private CoreScript core;
 
+    public SpriteRenderer playerSprite;
+    public Sprite p1Boat;
+    public Sprite p2Boat;
+    public Sprite p3Boat;
+    public Sprite p4Boat;
+    
     public Rigidbody2D player;
 
     private float currentSpeed;
@@ -35,7 +41,22 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
-        player = GetComponent<Rigidbody2D>();
+        core.addPlayer();
+        switch (core.playerCount)
+        {
+            case 1:
+                playerSprite.sprite = p1Boat;
+                break;
+            case 2:
+                playerSprite.sprite = p2Boat;
+                break;
+            case 3:
+                playerSprite.sprite = p3Boat;
+                break;
+            case 4:
+                playerSprite.sprite = p4Boat;
+                break;
+        }
     }
 
     
