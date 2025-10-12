@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class CoreScript : MonoBehaviour
 {
-    public int playerCount;
+    internal int playerCount;
+    internal int playerSpriteCount;
     
     public float scrollSpeed;
+
+    //Player Stat Refs
+    public float playerGameOverTime;
 
     //Rock Obstacle Refs
     public GameObject rock;
@@ -13,14 +17,15 @@ public class CoreScript : MonoBehaviour
     public float rockMaximumSize;
     private float rockSpawnTime;
 
-    void Awake()
-    {
-        Screen.SetResolution(400, 800, false);
-    }
-
-    public void addPlayer()
+    public void AddPlayer()
     {
         playerCount++;
+        playerSpriteCount++;
+    }
+
+    public void RemovePlayer()
+    {
+        playerCount--;
     }
 
     void Update()

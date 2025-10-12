@@ -1,10 +1,13 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.Windows;
 
 public class PlayerScript : MonoBehaviour
 {
     private CoreScript core;
+    private SceneScript scene;
 
     public SpriteRenderer playerSprite;
     public Sprite p1Boat;
@@ -32,17 +35,20 @@ public class PlayerScript : MonoBehaviour
     public float turnSpeed;
 
     private bool losing = false;
+    private float maxGameOverTime;
+    private float currentGameOverTime;
     private bool stuck = false;
 
     private void Awake()
     {
         core = Object.FindAnyObjectByType<CoreScript>();
+        scene = Object.FindAnyObjectByType<SceneScript>();
     }
 
     void Start()
     {
-        core.addPlayer();
-        switch (core.playerCount)
+        core.AddPlayer();
+        switch (core.playerSpriteCount)
         {
             case 1:
                 playerSprite.sprite = p1Boat;
@@ -57,6 +63,7 @@ public class PlayerScript : MonoBehaviour
                 playerSprite.sprite = p4Boat;
                 break;
         }
+        maxGameOverTime = core.playerGameOverTime;
     }
 
     
@@ -65,6 +72,16 @@ public class PlayerScript : MonoBehaviour
         if (losing == true)
         {
             player.linearVelocityY = 0.0f;
+            currentGameOverTime += Time.deltaTime;
+            if (currentGameOverTime >= maxGameOverTime)
+            {
+                Destroy(gameObject);
+                core.RemovePlayer();
+                if (core.playerCount == 0)
+                {
+                    scene.ChangeScene("EndScene");
+                }
+            }
         }
         else if (stuck == true)
         {
@@ -79,7 +96,7 @@ public class PlayerScript : MonoBehaviour
 
     void MovementUpdate()
     {
-        player.transform.position += transform.up * currentSpeed * Time.deltaTime;
+        player.transform.position += currentSpeed * Time.deltaTime * transform.up;
         player.transform.Rotate(new Vector3(0, 0, currentRotation) * Time.deltaTime);
 
         /*Forward Movement (DEPRECATED)
@@ -138,6 +155,7 @@ public class PlayerScript : MonoBehaviour
         if ((forwardPressed == false) && (losing == false))
         {
             currentSpeed -= forwardSpeed;
+
         }
     }
 
@@ -201,6 +219,7 @@ public class PlayerScript : MonoBehaviour
         if (other.CompareTag("LossZone"))
         {
             losing = false;
+            currentGameOverTime = 0.0f;
         }
 
         if (other.CompareTag("Rock"))
